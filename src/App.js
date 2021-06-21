@@ -4,10 +4,15 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  const [nome, setNome] = useState('');
+  const [name, setNome] = useState('');
+  const [isRender, setIsRender] = useState(false);
 
-  const handleNome = () => {
-    return setNome('João');
+  const handleChange = (event) => {
+    return setNome(event.target.value);
+  }
+
+  const setRender = () => {
+    return setIsRender(true);
   }
 
   return (
@@ -15,8 +20,9 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>Hello Word</p>
-        {nome && (<span>Seja bem-vindo: {nome}</span>)}
-        <button onClick={handleNome} >Boas-Vindas</button>
+        {isRender && (<span>Seja bem-vindo: {name}</span>)}
+        <input name="name" onChange={handleChange} />
+        <button onClick={setRender}>saudação</button>
       </header>
     </div>
   );
