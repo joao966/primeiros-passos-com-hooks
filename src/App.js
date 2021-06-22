@@ -1,39 +1,25 @@
-import React, {useState} from 'react';
-import {BrowserRouter, Switch, Route, Link} from 'react-router-dom';
-import contextSauder from './context/contex.js';
+import React from 'react';
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
+import Provider from './context/ProviderContext';
 import Saudacao from './Pages/Saudacao';
+import Main from './Pages/Main';
 
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  const [name, setNome] = useState('');
-
-  const handleChange = (event) => {
-    const nome = event.target.value;
-    return setNome(nome);
-  }
-
-  const INNITIAL_STATE = {
-    nome: name,
-  }
-
   return (
     <BrowserRouter>
-      <contextSauder.Provider value={ INNITIAL_STATE}>
-        <div className="App">
+    <Provider>
+        <div className="App App-header">
           <Switch>
             <header className="App-header">
-              <img src={logo} className="App-logo" alt="logo" />
-              <p>Hello Word</p>
-              <input name="name" onChange={handleChange} />
-              <Link to="/sauder">saudação</Link>
-              <Route path="/sauder" component={ Saudacao } />
+              <Route exact path="/" render={ (props) => <Main {...props} /> } />
+              <Route exact path="/sauder" component={ Saudacao } />
             </header>
           </Switch>
         </div>
-      </contextSauder.Provider>
+    </Provider>
     </BrowserRouter>
   );
 }

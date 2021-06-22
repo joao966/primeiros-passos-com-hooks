@@ -7,7 +7,7 @@ function Saudacao() {
   const {nome} = useContext(contextSauder);
   return (
     <div>
-      <h1>Saudação: {nome} </h1>
+      <h1 className="App-logo">Saudação: {nome} </h1>
     </div>
   );
 }
