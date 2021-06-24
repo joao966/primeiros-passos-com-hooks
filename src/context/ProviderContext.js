@@ -3,17 +3,18 @@ import context from '../context/contex';
 
 
 function Provider({children}) {
-  const [name, setNome] = useState('');
   const [Planet, setInput] = useState('');
   const [responseAPI, setResponseAPI] = useState([]);
+  const [filters, setFilters] = useState({
+    name: '',
+    number: 0,
+    column: 'population',
+    comparison: 'maior que',
+  });
 
   useEffect(() => {
-    if(name.length === 15) {
-      alert('max 15 letras')
-      document.querySelector('input').value = '';
-    }
-    console.log('chamou useEfectt de Provider')
-  }, [name])
+    fetchAPI();
+  }, [])
   
   const fetchAPI = async () => {
     const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
@@ -22,26 +23,52 @@ function Provider({children}) {
   }
   console.log(responseAPI)
 
-  const handleChangeName = (event) => {
-    const nome = event.target.value;
-    return setNome(nome);
-  }
-
   const handleChangePlanet = (event) => {
     setInput(event.target.value)
   }
-  console.log(`aqui${Planet}`)
+  console.log(`planet aqui${Planet}`)
+
+  const changefilteredByNumber = ({ target: { name, value } }) => {
+    setFilters({
+      ...filters,
+      [name]: value,
+    });
+  };
+
+  const handleButtonFilterClick = () => {
+    const { number, column, comparison } = filters;
+
+    const filteredData = responseAPI.filter((planet) => {
+      if (comparison === 'maior que') {
+        return parseInt(planet[column], 10) > parseInt(number, 10);
+      }
+
+      if (comparison === 'menor que') {
+        return parseInt(planet[column], 10) < parseInt(number, 10);
+      }
+
+      return parseInt(planet[column], 10) === parseInt(number, 10);
+    });
+    setResponseAPI(filteredData);
+  };
   
   const GLOBAL_STATE = {
-    nome: name,
-    handleChangeName,
     fetchAPI,
     responseAPI,
     handleChangePlanet,
+    changefilteredByNumber,
+    handleButtonFilterClick,
     filters: {
       filterByName: {
         name: Planet,
-      }
+      },
+      filterByNumericValues: [
+        {
+          column: 'population',
+          comparison: 'maior que',
+          value: '100000',
+        }
+      ]
     }
   }
   

@@ -2,8 +2,8 @@ import React from 'react';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import Provider from './context/ProviderContext';
-import Saudacao from './Pages/Saudacao';
-import Main from './Pages/Main';
+import Table from './Pages/Table';
+
 
 import './App.css';
 
@@ -13,10 +13,7 @@ function App() {
     <Provider>
         <div className="App App-header">
           <Switch>
-            <header className="App-header">
-              <Route exact path="/" render={ (props) => <Main {...props} /> } />
-              <Route exact path="/sauder" component={ Saudacao } />
-            </header>
+              <Route exact path="/" component={ Table } />
           </Switch>
         </div>
     </Provider>
