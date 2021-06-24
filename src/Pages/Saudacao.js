@@ -1,37 +1,40 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 
 import contextSauder from '../context/contex.js';
 
 function Saudacao() {
-  const [responseAPI, setResponseAPI] = useState([]);
-  const [count, setCount] = useState(10);
-  const [request, setRequest] = useState(0);
-  const {nome} = useContext(contextSauder);
-
-  const interval = setInterval(() => {
-    setRequest(state => state + 1)
-  }, 3000)
+  const {nome, fetchAPI, responseAPI, handleChangePlanet, filters: {filterByName: {name}} } = useContext(contextSauder);
 
   useEffect(() => {
     fetchAPI();
-    console.log('chamou useEfectt')
-    return () => { //o return do useEfect é um analogo no componentWillUnmount
-      clearInterval(interval)
-    }
-  }, [request, interval])
-  
-  const fetchAPI = async () => {
-    const response = await fetch('https://restcountries.eu/rest/v2/all');
-    const responseJson = await response.json();
-    setResponseAPI(responseJson);
-    setCount((state) => state + 1)
-  }
-  console.log(count)
-  console.log(responseAPI)
+    console.log('chamou useEfectt de saudação')
+  },[])
   
   return (
-    <div>
+    <div className="cor">
       <h1 className="App-logo">Saudação: {nome} </h1>
+      <input onChange={handleChangePlanet} />
+      <table>
+        <thead>
+          <tr>
+            <th>Planetas</th>
+            <th>População</th>
+            <th>Gravidade</th>
+            <th>Rotação</th>
+          </tr>
+        </thead>
+        <tbody>
+          {responseAPI.filter((filter) => filter.name.includes(name) )
+          .map((planet, index) => (
+            <tr key={index}>
+              <td>{planet.name}</td>
+              <td>{planet.population}</td>
+              <td>{planet.gravity}</td>
+              <td>{planet.rotation_period}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
